@@ -1,0 +1,93 @@
+#include<iostream>
+#include<bits/stdc++.h>
+using namespace std;
+
+
+class node{
+     public:
+    int fre;
+    char c;
+    node *left;
+    node *right;
+    node(){
+        fre=0;
+        c='#';
+        left=NULL;
+        right=NULL;
+    }
+    node(char b,int f){
+        c=b;
+        fre=f;
+        left=NULL;
+        right=NULL;
+    }
+    node(node *tem1,node *tem2,int to){
+        left=tem1;
+        right=tem2;
+        c='#';
+        fre=to;
+    }
+  /*  bool operator<(const node &a) const
+		{
+			return fre > a.fre;
+		}*/
+
+};
+
+ 
+
+struct Compare{
+bool operator()(node *left,node *right){
+    if(left->fre > right->fre)return true;
+    return false;
+
+}
+};
+
+void getcode(node *tem,map<char,string>&m1,string s){
+  
+    if(tem->left==NULL &&tem->right==NULL){
+        m1[tem->c]=s;
+        return ;
+    }
+    string s1=s;
+    string s2=s;
+    s1.push_back('0');
+    s2.push_back('1');
+    getcode(tem->left,m1,s1);
+    getcode(tem->right,m1,s2);
+    return;
+}
+void huffman(string n){
+    map<char,int>m1;
+    for(int i=0;i<n.length();i++)m1[n[i]]++;
+    priority_queue<node *,vector<node *>,Compare>q1;
+
+                        for(auto x:m1){
+        node * tem= new node(x.first,x.second);
+        q1.push(tem);
+    }
+   while(q1.size()!=1){
+    node * tem=q1.top();
+    q1.pop();
+    node * tem2=q1.top();
+    q1.pop();
+  
+    node * tem3= new node(tem,tem2,tem->fre+tem2->fre);
+    q1.push(tem3);
+   }
+   cout<<"dsgdfgfgfdgfdg\n";
+    map<char,string>s1;
+    
+    getcode(q1.top(),s1,"");
+    for(auto x:s1){
+        cout<<x.first<<" "<<x.second<<endl;
+    }
+}
+
+
+int main(){
+  string m="aaaabbn";
+  huffman(m);
+
+}

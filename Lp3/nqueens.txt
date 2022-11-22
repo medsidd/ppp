@@ -1,0 +1,108 @@
+class Nqueen{
+   private:
+	int mat[100][100];
+	int n;
+	int r;
+	int c;
+   public:
+	Nqueen(){
+		memset(mat,0,sizeof(mat));
+		n=0;
+		r=0;
+		c=0;
+	}
+	void takesize(){
+		cout<<"Enter the size of the board"<<endl;
+		int x;cin>>x;
+		n=x;
+		cout<<"Enter the row and the column where the first queen need to be placed\n";
+		int temx;
+		int temy;
+		cin>>temx>>temy;
+		r=temx;
+		c=temy;
+		mat[r][c]=1;
+	}
+
+	void printmat(){
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				if(mat[i][j]){
+					cout<<'Q'<<" ";
+				}
+				else{
+					cout<<"_"<<" ";
+				}
+			}
+			cout<<endl;
+		}
+	}
+
+	bool possible(int r,int c){
+		for(int i=0;i<n;i++){
+			if(mat[r][i])return false;
+		}
+		for(int i=0;i<n;i++){
+			if(mat[i][c])return false;
+		}
+		for(int i=r,j=c;i>=0&&j>=0;i--,j--){
+			if(mat[i][j])return false;
+		}
+		   for(int i=r,j=c;i<n&&j>=0;i++,j--){
+					if(mat[i][j])return false;
+				}
+		   for(int i=r,j=c;i>=0&&j<n;i--,j++){
+		  					if(mat[i][j])return false;
+		  				}
+		   for(int i=r,j=c;i<n&&j<n;i++,j++){
+		  					if(mat[i][j])return false;
+		  				}
+		   return true;
+	}
+
+	bool backtrac(int no_of_queen,int i){
+		if(no_of_queen==n){
+			printmat();
+			return true;
+		}
+		for(int i1=0;i1<n;i1++){
+
+			if(i==c){
+				if(backtrac(no_of_queen+1,i+1)){
+					return true;
+				}
+
+
+			}
+			else{
+
+			if(possible(i1,i)){
+				mat[i1][i]=1;
+				if(backtrac(no_of_queen+1,i+1)){
+					return true;
+				}
+				mat[i1][i]=0;
+
+			}
+			}
+		}
+		return false;
+	}
+
+	void backtrackhelp(){
+		if(backtrac(0,0)){
+			cout<<"Solution exist\n";
+		}
+		else{
+			cout<<"No solution exist\n";
+		}
+	}
+
+};
+int main() {
+	 
+	Nqueen q1;
+	q1.takesize();
+    q1.backtrackhelp();
+	return 0;
+}
